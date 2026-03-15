@@ -1,0 +1,12 @@
+{% extends "employe/base.html" %}
+
+{% block content %}
+  <h1 class="text-2xl font-bold mb-4">Supprimer un employe</h1>
+  <p class="mb-6">Voulez-vous vraiment supprimer <strong>{{ employe.name }}</strong> ?</p>
+
+  <form method="post" class="flex gap-2">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-error">Confirmer</button>
+    <a href="{% url 'list_employe' %}" class="btn btn-ghost">Annuler</a>
+  </form>
+{% endblock %}

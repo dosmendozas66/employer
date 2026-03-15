@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chargement...</title>
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+
+        html, body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #scene {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .label {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%);
+            color: #fff;
+            opacity: 0.75;
+            letter-spacing: 0.08em;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="scene"></canvas>
+    <div class="label">Chargement de l'application...</div>
+
+    <script>
+        const canvas = document.getElementById("scene");
+        const ctx = canvas.getContext("2d");
+        const startTime = Date.now();
+
+        let i = 0;
+        let h = 0;
+        let angle = 0;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawStep() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            // Fond semi-transparent pour garder une trainee lumineuse.
+            ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const stepsPerFrame = 4;
+            for (let s = 0; s < stepsPerFrame; s += 1) {
+                h += 0.0015;
+                const hue = (h * 360) % 360;
+                const dist = i * 2;
+                const rad = (angle * Math.PI) / 180;
+
+                const endX = centerX + Math.cos(rad) * dist;
+                const endY = centerY + Math.sin(rad) * dist;
+
+                ctx.strokeStyle = `hsl(${hue}, 100%, 60%)`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(endX, endY, 26, rad, rad + (50 * Math.PI) / 180);
+                ctx.stroke();
+
+                i += 1;
+                angle += 10;
+                if (i > 200) {
+                    i = 0;
+                }
+            }
+
+            if (Date.now() - startTime < 3000) {
+                requestAnimationFrame(drawStep);
+            }
+        }
+
+        resize();
+        drawStep();
+        window.addEventListener("resize", resize);
+
+        setTimeout(() => {
+            window.location.href = "{% url 'list_employe' %}";
+        }, 3000);
+    </script>
+</body>
+</html>

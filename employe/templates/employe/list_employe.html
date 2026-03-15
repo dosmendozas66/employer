@@ -1,0 +1,27 @@
+{% extends "employe/base.html" %}
+
+{% block content %}
+  
+  <div class="flex items-center justify-between mb-6 flex-col">
+    <h1 class="text-2xl font-bold mb-4">Liste des employes</h1>
+    <a href="{% url 'ajouter_employe' %}" class="btn btn-primary w-full">Ajouter un employe</a>
+  </div>
+
+  <div class="flex flex-col gap-4">
+    {% for employe in employes %}
+      <article class="flex flex-col md:flex-row justify-between md:items-center rounded-xl bg-base-100 p-5 shadow">
+        <div>
+          <p class="font-semibold text-lg">{{ employe.name }}</p>
+          <p class="text-sm opacity-70 text-primary">{{ employe.email }}</p>
+          <p class="text-sm mt-1">{{ employe.poste }} | {{ employe.salaire }} $</p>
+        </div>
+        <div class="mt-4 md:mt-0 flex gap-2">
+          <a href="{% url 'modifier_employe' employe.id %}" class="btn btn-sm btn-warning">Modifier</a>
+          <a href="{% url 'supprimer_employe' employe.id %}" class="btn btn-sm btn-error">Supprimer</a>
+        </div>
+      </article>
+    {% empty %}
+      <p class="opacity-70">Aucun employe enregistre.</p>
+    {% endfor %}
+  </div>
+{% endblock %}
