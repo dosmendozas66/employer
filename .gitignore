@@ -1,0 +1,17 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+env/
+venv/
+.venv/
+
+# Local secrets
+.env
+
+# Django local database
+db.sqlite3
+
+# Collected static files
+.render_static/
